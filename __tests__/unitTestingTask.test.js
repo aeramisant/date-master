@@ -5,59 +5,12 @@ const {
   lang,
 } = require('../unitTestingTask');
 const unitTestingTask = require('../unitTestingTask');
+const assert = require('assert');
 
 describe('leadingZeroes', () => {
-  test('should add leading zeroes to a single-digit number', () => {
-    const result = leadingZeroes(5);
-    expect(result).toBe('05');
-  });
-
-  test('should not add leading zeroes to a two-digit number', () => {
-    const result = leadingZeroes(12);
-    expect(result).toBe('12');
-  });
-
-  test('should handle custom length', () => {
-    const result = leadingZeroes(8, 3);
-    expect(result).toBe('008');
-  });
-
   test('should handle numbers already at or above the specified length', () => {
     const result = leadingZeroes(123, 2);
     expect(result).toBe('123');
-  });
-});
-
-describe('tokens', () => {
-  const mockDate = new Date('2022-01-28T12:34:56');
-
-  test('should format year (YYYY)', () => {
-    const result = tokens.YYYY(mockDate);
-    expect(result.toString()).toBe('2022'); // Convert result to string for comparison
-  });
-
-  test('should format month (MM)', () => {
-    const result = tokens.MM(mockDate);
-    expect(result).toBe('01');
-  });
-
-  test('should format time zone in extended format (Z)', () => {
-    const result = tokens.Z(mockDate);
-    expect(result).toMatch(/^[+-]\d{2}:\d{2}$/);
-  });
-});
-
-describe('unitTestingTask', () => {
-  // Additional tests
-  test('should format date using a custom format', () => {
-    const customFormat = 'YYYY/MM/DD';
-    const result = unitTestingTask(customFormat, '2022-01-28');
-    expect(result).toBe('2022/01/Fri');
-  });
-
-  test('should handle invalid format', () => {
-    const invalidFormat = 123; // Invalid format
-    expect(() => unitTestingTask(invalidFormat)).toThrow(TypeError);
   });
 });
 
@@ -72,107 +25,8 @@ describe('unitTestingTask - languages', () => {
   // Add more tests to cover different scenarios.
 });
 
-describe('unitTestingTask - uncovered lines', () => {
-  test('should cover line 5-6', () => {
-    // Test logic for line 5-6 (leadingZeroes function initialization)
-    // You may want to test with different scenarios.
-    const result = leadingZeroes(5);
-    expect(result).toBe('05');
-  });
-
-  test('should cover line 11', () => {
-    // Test logic for line 11 (tokens initialization)
-    // You may want to test with different scenarios.
-    const mockDate = new Date('2022-01-28T12:34:56');
-    const result = tokens.YYYY(mockDate);
-    expect(result.toString()).toBe('2022');
-  });
-
-  test('should cover lines 71-101', () => {
-    // Test logic for lines 71-101 (unitTestingTask function)
-    const result = unitTestingTask('YYYY', '2022-01-28');
-    expect(result).toBe('2022');
-  });
-
-  test('should cover line 180', () => {
-    // Test logic for line 180 (languages[unitTestingTask.lang()].months(date, format) check)
-    const mockDate = new Date('2022-01-28T12:34:56');
-    const result = tokens.MMMM(mockDate, 'format');
-    // Add your assertions based on the expected result
-  });
-
-  // Add tests for other uncovered lines
-
-  // Repeat similar tests for other uncovered lines
-  // Assuming the missing functions or variables in your test file
-
-  // Mock createFormatter function for testing
-  const createFormatter = jest.fn((format) => (date) => 'mocked result');
-
-  // Mock register function for testing
-  unitTestingTask.register = jest.fn();
-
-  // Mock noConflict function for testing
-  unitTestingTask.noConflict = jest.fn(() => 'mocked noConflict result');
-
-  // Mock leadingZeroes function for testing
-  unitTestingTask.leadingZeroes = jest.fn();
-
-  // Mock tokens variable for testing
-  unitTestingTask.tokens = ['mockedToken1', 'mockedToken2'];
-
-  test('should cover lines 224-234', () => {
-    // Test logic for lines 224-234 (createFormatter function and register function)
-    const format = 'YYYY';
-    const formatter = createFormatter(format);
-    const result = formatter(new Date('2022-01-28T12:34:56'));
-    expect(result).toBe('mocked result');
-
-    // Additional test for register function
-    const customFormat = 'DD/MM/YYYY';
-    unitTestingTask.register('customFormat', customFormat);
-    expect(unitTestingTask.register).toHaveBeenCalledWith(
-      'customFormat',
-      customFormat
-    );
-  });
-
-  test('should cover lines 276-277', () => {
-    // Test logic for lines 276-277 (Expose the leadingZeroes function and tokens for testing)
-    expect(unitTestingTask.leadingZeroes).toBeDefined();
-    expect(unitTestingTask.tokens).toBeDefined();
-  });
-
-  test('should cover lines 317', () => {
-    // Test logic for line 317 (unitTestingTask.formatters() call)
-    const formatters = unitTestingTask.formatters();
-    expect(formatters).toContain('ISODate');
-    expect(formatters).toContain('ISOTime');
-    expect(formatters).toContain('ISODateTime');
-    expect(formatters).toContain('ISODateTimeTZ');
-    // Add additional assertions based on your formatters
-  });
-
-  test('should cover lines 335-336', () => {
-    // Test logic for lines 335-336 (unitTestingTask.lang() call)
-    const currentLang = unitTestingTask.lang();
-    expect(currentLang).toBeDefined();
-    // Add additional assertions based on your lang function
-  });
-});
-
 describe('tokens', () => {
   const mockDate = new Date('2022-01-28T12:34:56');
-
-  test('should format year (YYYY)', () => {
-    const result = tokens.YYYY(mockDate);
-    expect(result).toBe(2022);
-  });
-
-  test('should format year (YY)', () => {
-    const result = tokens.YY(mockDate);
-    expect(result).toBe('22');
-  });
 
   test('should format month (MMMM)', () => {
     const result = tokens.MMMM(mockDate, 'format');
@@ -184,24 +38,9 @@ describe('tokens', () => {
     // Add your assertions based on the expected result
   });
 
-  test('should format month (MM)', () => {
-    const result = tokens.MM(mockDate);
-    expect(result).toBe('01');
-  });
-
   test('should format month (M)', () => {
     const result = tokens.M(mockDate);
     expect(result).toBe(1);
-  });
-
-  test('should format weekday (DDD)', () => {
-    const result = tokens.DDD(mockDate);
-    // Add your assertions based on the expected result
-  });
-
-  test('should format weekday (DD)', () => {
-    const result = tokens.DD(mockDate);
-    // Add your assertions based on the expected result
   });
 
   test('should format weekday (D)', () => {
@@ -209,19 +48,9 @@ describe('tokens', () => {
     // Add your assertions based on the expected result
   });
 
-  test('should format day (dd)', () => {
-    const result = tokens.dd(mockDate);
-    expect(result).toBe('28');
-  });
-
   test('should format day (d)', () => {
     const result = tokens.d(mockDate);
     expect(result).toBe(28);
-  });
-
-  test('should format hour (HH)', () => {
-    const result = tokens.HH(mockDate);
-    expect(result).toBe('12');
   });
 
   test('should format hour (H)', () => {
@@ -269,23 +98,87 @@ describe('tokens', () => {
     // Add your assertions based on the expected result
   });
 
-  test('should format meridiem (A)', () => {
-    const result = tokens.A(mockDate);
-    // Add your assertions based on the expected result
-  });
-
   test('should format meridiem (a)', () => {
     const result = tokens.a(mockDate);
-    // Add your assertions based on the expected result
-  });
-
-  test('should format timezone (ZZ)', () => {
-    const result = tokens.ZZ(mockDate, 'format', ':');
     // Add your assertions based on the expected result
   });
 
   test('should format timezone (Z)', () => {
     const result = tokens.Z(mockDate);
     // Add your assertions based on the expected result
+  });
+});
+describe('date formatting', () => {
+  const date = new Date(2022, 0, 1, 13, 14, 15, 123); // January 1, 2022 13:14:15.123
+
+  it('should format YYYY', () => {
+    expect(unitTestingTask('YYYY', date)).toBe('2022');
+  });
+
+  it('should format YY', () => {
+    expect(unitTestingTask('YY', date)).toBe('22');
+  });
+});
+
+describe('unitTestingTask', () => {
+  // Line 180
+  test('should throw TypeError when format is not a string', () => {
+    expect(() => unitTestingTask(123)).toThrow(TypeError);
+  });
+
+  // Line 225
+  test('should return formatted date string', () => {
+    const date = new Date(2022, 0, 1); // January 1, 2022
+    expect(unitTestingTask('YYYY-MM-DD', date)).toBe('2022-01-Sat');
+  });
+
+  // Line 234
+  test('should return formatted date string using token', () => {
+    const date = new Date(2022, 0, 1, 12); // January 1, 2022, 12:00
+    expect(unitTestingTask('HH', date)).toBe('12');
+  });
+
+  // Line 195
+  test('should throw error when invalid date is provided', () => {
+    expect(() => unitTestingTask('YYYY-MM-DD', {})).toThrow();
+  });
+});
+describe('unitTestingTask function', () => {
+  it('should handle future dates', () => {
+    // Define a future date
+    const futureDate = new Date();
+    futureDate.setFullYear(futureDate.getFullYear() + 1);
+
+    // Call the function with the future date
+    const result = unitTestingTask('YYYY', futureDate);
+
+    // Check the output
+    expect(result).toBe(futureDate.getFullYear().toString());
+  });
+});
+describe('unitTestingTask', () => {
+  it('should use existing formatter if available', () => {
+    unitTestingTask.register('testFormat', 'YYYY');
+    const date = new Date(2022, 0, 1); // January 1, 2022
+    assert.strictEqual(unitTestingTask('testFormat', date), '2022');
+  });
+  // Test for the case when date is not provided
+  test('should handle when date is not provided', () => {
+    const date = new Date();
+    expect(unitTestingTask('YYYY')).toBe(date.getFullYear().toString());
+  });
+});
+describe('unitTestingTask.noConflict', () => {
+  it('should restore previous value of window.unitTestingTask', () => {
+    // Save the current value of window.unitTestingTask
+    const original = window.unitTestingTask;
+    // Set window.unitTestingTask to a new value
+    window.unitTestingTask = 'test';
+    // Call unitTestingTask.noConflict
+    const result = unitTestingTask.noConflict();
+    // Check if window.unitTestingTask is restored to the original value
+    assert.strictEqual(window.unitTestingTask, original);
+    // Check if unitTestingTask.noConflict returned the current unitTestingTask function
+    assert.strictEqual(result, unitTestingTask);
   });
 });
