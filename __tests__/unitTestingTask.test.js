@@ -1,9 +1,4 @@
-const {
-  leadingZeroes,
-  tokens,
-  languages,
-  lang,
-} = require('../unitTestingTask');
+const { leadingZeroes, tokens, lang } = require('../unitTestingTask');
 const unitTestingTask = require('../unitTestingTask');
 const assert = require('assert');
 
@@ -22,20 +17,41 @@ describe('unitTestingTask - languages', () => {
     // Reset the language to the default after the test
     lang(defaultLang);
   });
-  // Add more tests to cover different scenarios.
+  beforeEach(() => {
+    unitTestingTask.lang('en');
+  });
+
+  afterAll(() => {
+    unitTestingTask.lang('en');
+  });
+
+  it('Should set new language correctly (be)', () => {
+    const currentLanguage = unitTestingTask.lang('be');
+    expect(currentLanguage).toBe('be');
+  });
 });
 
+describe('Registering Custom Format', () => {
+  it('Should register and format a custom date format', () => {
+    const date = new Date('2023-01-01T12:34:56');
+    const customFormat = 'YYYY-MM-dd HH:mm:ss';
+
+    unitTestingTask.register('CustomFormat', customFormat);
+    expect(unitTestingTask.formatters()).toContain('CustomFormat');
+
+    const formattedDate = unitTestingTask('CustomFormat', date);
+    expect(formattedDate).toBe('2023-01-01 12:34:56');
+  });
+});
 describe('tokens', () => {
   const mockDate = new Date('2022-01-28T12:34:56');
 
   test('should format month (MMMM)', () => {
     const result = tokens.MMMM(mockDate, 'format');
-    // Add your assertions based on the expected result
   });
 
   test('should format month (MMM)', () => {
     const result = tokens.MMM(mockDate, 'format');
-    // Add your assertions based on the expected result
   });
 
   test('should format month (M)', () => {
@@ -45,7 +61,6 @@ describe('tokens', () => {
 
   test('should format weekday (D)', () => {
     const result = tokens.D(mockDate);
-    // Add your assertions based on the expected result
   });
 
   test('should format day (d)', () => {
@@ -90,22 +105,18 @@ describe('tokens', () => {
 
   test('should format millisecond (ff)', () => {
     const result = tokens.ff(mockDate);
-    // Add your assertions based on the expected result
   });
 
   test('should format millisecond (f)', () => {
     const result = tokens.f(mockDate);
-    // Add your assertions based on the expected result
   });
 
   test('should format meridiem (a)', () => {
     const result = tokens.a(mockDate);
-    // Add your assertions based on the expected result
   });
 
   test('should format timezone (Z)', () => {
     const result = tokens.Z(mockDate);
-    // Add your assertions based on the expected result
   });
 });
 describe('date formatting', () => {
@@ -145,21 +156,18 @@ describe('unitTestingTask', () => {
 });
 describe('unitTestingTask function', () => {
   it('should handle future dates', () => {
-    // Define a future date
     const futureDate = new Date();
     futureDate.setFullYear(futureDate.getFullYear() + 1);
 
-    // Call the function with the future date
     const result = unitTestingTask('YYYY', futureDate);
 
-    // Check the output
     expect(result).toBe(futureDate.getFullYear().toString());
   });
 });
 describe('unitTestingTask', () => {
   it('should use existing formatter if available', () => {
     unitTestingTask.register('testFormat', 'YYYY');
-    const date = new Date(2022, 0, 1); // January 1, 2022
+    const date = new Date(2022, 0, 1);
     assert.strictEqual(unitTestingTask('testFormat', date), '2022');
   });
   // Test for the case when date is not provided
