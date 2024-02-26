@@ -1,0 +1,349 @@
+const unitTestingTask = require('../unitTestingTask');
+
+describe('Validating Input', () => {
+  it('Should throw an error on non-string format input', () => {
+    const date = new Date('2023-10-07T12:30:00');
+    const format = { format: 'YYYY' };
+
+    expect(() => {
+      unitTestingTask(format, date);
+    }).toThrow();
+  });
+
+  it('Should throw an error on incorrect Date input (date argument must be an instance of Date or Unix Timestamp or ISODate String)', () => {
+    const date = { date: '2023-10-07T12:30:00' };
+    const format = 'YYYY';
+
+    expect(() => {
+      unitTestingTask(format, date);
+    }).toThrow();
+  });
+});
+
+describe('Date Formatting', () => {
+  const date = new Date('2023-10-07T12:30:00');
+
+  describe('Year Formatting', () => {
+    it('Should format year in YYYY (4-digit year) format correctly', () => {
+      const format = 'YYYY';
+      const expectedOutput = '2023';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format date in YY (last 2 digit of year) format correctly', () => {
+      const format = 'YY';
+      const expectedOutput = '23';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  describe('Month Formatting', () => {
+    it('Should format month in MMMM (full name of month) format correctly', () => {
+      const format = 'MMMM';
+      const expectedOutput = 'October';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format month in MMM (short name of month) format correctly', () => {
+      const format = 'MMM';
+      const expectedOutput = 'Oct';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format month in MM (number of month with zero-padding) format correctly', () => {
+      const date = new Date('2023-3-07');
+      const format = 'MM';
+      const expectedOutput = '03';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format month in M (number of month without zero-padding) format correctly', () => {
+      const date = new Date('2023-03-07');
+      const format = 'M';
+      const expectedOutput = '3';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  describe('Day Formatting', () => {
+    it('Should format day in DDD (full name of day) format correctly', () => {
+      const format = 'DDD';
+      const expectedOutput = 'Saturday';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format day in DD (short name of day) format correctly', () => {
+      const format = 'DD';
+      const expectedOutput = 'Sat';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format day in D (min name of day) format correctly', () => {
+      const format = 'D';
+      const expectedOutput = 'Sa';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format day in dd (number of day in month with zero-padding) format correctly', () => {
+      const format = 'dd';
+      const expectedOutput = '07';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format day in d (number of day in month without zero-padding) format correctly', () => {
+      const format = 'd';
+      const expectedOutput = '7';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  describe('Hour Formatting', () => {
+    it('Should format hour in HH (hour in 24-hr format with zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:30:00');
+      const format = 'HH';
+      const expectedOutput = '07';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format hour in H (hour in 24-hr format without zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:30:00');
+      const format = 'H';
+      const expectedOutput = '7';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format hour in hh (hour in 12-hr format with zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T16:30:00');
+      const format = 'hh';
+      const expectedOutput = '04';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format hour in h (hour in 12-hr format without zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T16:30:00');
+      const format = 'h';
+      const expectedOutput = '4';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  describe('Minutes Formatting', () => {
+    it('Should format minutes in mm (minutes with zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:00');
+      const format = 'mm';
+      const expectedOutput = '05';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format minutes in m (minutes without zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:00');
+      const format = 'm';
+      const expectedOutput = '5';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  describe('Seconds Formatting', () => {
+    it('Should format seconds in ss (seconds with zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:04');
+      const format = 'ss';
+      const expectedOutput = '04';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format seconds in s (seconds without zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:04');
+      const format = 's';
+      const expectedOutput = '4';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  describe('Milliseconds Formatting', () => {
+    it('Should format milliseconds in ff (seconds with zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:04.054');
+      const format = 'ff';
+      const expectedOutput = '054';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format seconds in f (seconds without zero-padding) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:04.054');
+      const format = 'f';
+      const expectedOutput = '54';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  describe('12Hour Clock Periods Formatting', () => {
+    it('Should format period in A (AM) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:04');
+      const format = 'A';
+      const expectedOutput = 'AM';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format period in A (PM) format correctly', () => {
+      const date = new Date('2023-10-07T17:05:04');
+      const format = 'A';
+      const expectedOutput = 'PM';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format seconds in a (am) format correctly', () => {
+      const date = new Date('2023-10-07T07:05:04');
+      const format = 'a';
+      const expectedOutput = 'am';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format seconds in a (pm) format correctly', () => {
+      const date = new Date('2023-10-07T17:05:04');
+      const format = 'a';
+      const expectedOutput = 'pm';
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+
+  /**
+   * Adds leading zeroes to a number to achieve the desired length.
+   *
+   * @param {Number} value - The number to be formatted.
+   * @param {Number} [length=2] - The desired length of the result.
+   * @return {String} - The formatted number as a string.
+   */
+  function leadingZeroes(value, length) {
+    var str = value.toString(),
+      finalLen = arguments.length === 2 ? length : 2;
+
+    if (str.length > finalLen) {
+      return str;
+    }
+
+    // this task can be accomplished in one line — empty for cycle
+    for (str; str.length < finalLen; str = '0' + str);
+
+    return str;
+  }
+
+  describe('Time-Zone Formatting', () => {
+    function formatTimezone(date, separator = '') {
+      const tz = date.getTimezoneOffset();
+      const hours = Math.abs(Math.floor(tz / 60));
+      const mins = tz % 60;
+      const sign = tz > 0 ? '-' : '+';
+
+      return `${sign}${leadingZeroes(hours)}${separator}${leadingZeroes(mins)}`;
+    }
+
+    it('Should format Time-Zone offset in ZZ (basic format) correctly', () => {
+      const date = new Date('2023-10-07T07:05:04-03:00');
+      const format = 'ZZ';
+
+      const expectedOutput = formatTimezone(date);
+
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+
+    it('Should format Time-Zone offset in Z (extended format) correctly', () => {
+      const date = new Date('2023-10-07T07:05:04-03:00');
+      const format = 'Z';
+
+      const expectedOutput = formatTimezone(date, ':');
+
+      const result = unitTestingTask(format, date);
+      expect(result).toBe(expectedOutput);
+    });
+  });
+});
+
+describe('Setting Formatting Language', () => {
+  beforeEach(() => {
+    unitTestingTask.lang('en');
+  });
+
+  afterAll(() => {
+    unitTestingTask.lang('en');
+  });
+
+  it('Should set and get the formatting language', () => {
+    const currentLanguage = unitTestingTask.lang('en');
+    expect(currentLanguage).toBe('en');
+  });
+
+  it('Should get the formatting language', () => {
+    const currentLanguage = unitTestingTask.lang();
+    expect(currentLanguage).toBe('en');
+  });
+
+  it('Should handle non-existent languages', () => {
+    unitTestingTask.lang('nonexistent');
+    const currentLanguage = unitTestingTask.lang();
+    expect(currentLanguage).not.toBe('nonexistent');
+  });
+
+  it('Should set new language correctly (be)', () => {
+    const currentLanguage = unitTestingTask.lang('be');
+    expect(currentLanguage).toBe('be');
+  });
+});
+
+describe('Registering Custom Format', () => {
+  it('Should register and format a custom date format', () => {
+    const date = new Date('2023-01-01T12:34:56');
+    const customFormat = 'YYYY-MM-dd HH:mm:ss';
+
+    unitTestingTask.register('CustomFormat', customFormat);
+    expect(unitTestingTask.formatters()).toContain('CustomFormat');
+
+    const formattedDate = unitTestingTask('CustomFormat', date);
+    expect(formattedDate).toBe('2023-01-01 12:34:56');
+  });
+
+  it('Should allow overwriting an existing custom date format', () => {
+    const date = new Date('2023-01-01T12:34:56');
+    const customFormat1 = 'YYYY-MM-dd HH:mm:ss';
+    const customFormat2 = 'MMMM dd, YYYY';
+
+    unitTestingTask.register('CustomFormat', customFormat1);
+    unitTestingTask.register('CustomFormat', customFormat2);
+
+    const formattedDate = unitTestingTask('CustomFormat', date);
+
+    expect(formattedDate).toBe('January 01, 2023');
+  });
+});
+
+describe('Cleaning global namespace', () => {
+  it('should return the unitTestingTask library', () => {
+    const myUnitTestingTask = unitTestingTask.noConflict();
+
+    expect(myUnitTestingTask).toBe(unitTestingTask);
+  });
+});
